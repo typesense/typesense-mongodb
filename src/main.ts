@@ -1,27 +1,10 @@
-import { Db, MongoClient } from 'mongodb';
-import { Client } from 'typesense';
+import { MongoClient } from "./MongoClient";
 
 const mongoUrlLocal = "mongodb://root:example@localhost:27017";
 
-async function listDatabases(client: MongoClient) {
-  const databasesList = await client.db().admin().listDatabases();
-
-  console.log('Databases:');
-  databasesList.databases.forEach((db: any) => console.log(` - ${db.name}`));
-}
-
-export async function Main() {
-  const mongodbOptions = {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  };
-  const client = new MongoClient(mongoUrlLocal, mongodbOptions);
-  try {
-    await client.connect();
-    await listDatabases(client);
-  } catch (e) {
-    console.error(e);
-  } finally {
-    await client.close();
-  }
+export async function Main(): Promise<void> {
+  const mongo: MongoClient = new MongoClient(mongoUrlLocal);
+  await mongo.connectDb();
+  const dbList = await mongo.listAlldatabases();
+  console.log(dbList);
 }

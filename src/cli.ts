@@ -1,7 +1,6 @@
-import { Main } from './main';
+import { Main } from "./main";
 
-export async function cli(args) {
+export async function cli(args: string[]): Promise<void> {
   await Main();
-  let string = 'hello';
   console.log(args);
 }
