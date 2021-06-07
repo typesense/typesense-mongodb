@@ -7,6 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "prettier --write ."
   },
+  "bin": {
+    "typesense-mongodb": "bin/typesense-mongodb"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/typesense/typesense-mongodb.git"
@@ -31,7 +34,6 @@
     "pkg-install": "^1.0.0"
   },
   "devDependencies": {
-    "babel-eslint": "^10.1.0",
     "eslint": "^7.23.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-import": "^2.22.1",
