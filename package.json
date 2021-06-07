@@ -21,7 +21,7 @@
     "url": "https://github.com/typesense/typesense-mongodb/issues"
   },
   "publishConfig": {
-      "access": "public"
+    "access": "public"
   },
   "dependencies": {
     "arg": "^5.0.0",
@@ -30,8 +30,10 @@
     "execa": "^5.1.1",
     "inquirer": "^8.1.0",
     "listr": "^0.14.3",
+    "mongodb": "^3.6.9",
     "ncp": "^2.0.0",
-    "pkg-install": "^1.0.0"
+    "pkg-install": "^1.0.0",
+    "typesense": "^0.12.1"
   },
   "devDependencies": {
     "eslint": "^7.23.0",
