@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "prettier --write ."
+    "lint": "./node_modules/.bin/eslint -c .eslintrc.js",
+    "build": "tsc"
   },
   "bin": {
     "typesense-mongodb": "bin/typesense-mongodb"
@@ -24,9 +25,9 @@
     "access": "public"
   },
   "dependencies": {
+    "@types/mongodb": "^3.6.17",
     "arg": "^5.0.0",
     "chalk": "^4.1.1",
-    "esm": "^3.2.25",
     "execa": "^5.1.1",
     "inquirer": "^8.1.0",
     "listr": "^0.14.3",
@@ -36,12 +37,13 @@
     "typesense": "^0.12.1"
   },
   "devDependencies": {
-    "eslint": "^7.23.0",
-    "eslint-config-prettier": "^8.1.0",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.3.1",
-    "prettier": "^2.2.1"
+    "@typescript-eslint/eslint-plugin": "^4.26.0",
+    "@typescript-eslint/parser": "^4.26.0",
+    "eslint": "^7.28.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "prettier": "^2.3.1",
+    "typescript": "^4.3.2"
   },
   "homepage": "https://github.com/typesense/typesense-mongodb#readme"
 }
