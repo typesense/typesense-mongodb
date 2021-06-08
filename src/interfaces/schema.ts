@@ -1,6 +1,7 @@
 export interface schema {
   name: string;
   fields: field[];
+  default_sorting_field?: string;
 }
 
 interface field {
