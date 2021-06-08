@@ -1,15 +1,26 @@
 import { MongoClient } from "./MongoClient";
+import { TypesenseClient } from "./TypesenseClient";
 
 const mongoUrlLocal = "mongodb://root:example@localhost:27017";
 
 export async function Main(): Promise<void> {
   const mongo: MongoClient = new MongoClient(mongoUrlLocal);
-  await mongo.connectDb();
+  const typesense: TypesenseClient = new TypesenseClient("xyz", [
+    {
+      host: "localhost",
+      port: "8108",
+      protocol: "http",
+    },
+  ]);
+  // await typesense.createCollection("books");
+  await mongo.connectMongo();
   // const dbList = await mongo.listAlldatabases();
-  // console.log(dbList);
   // dbList = await mongo.listAlldatabases();
-  // console.log(dbList);
   // await mongo.listCollections("database");
   await mongo.insertDocuments("database", "books");
-  await mongo.closeDb();
+  await typesense.importDocuments(
+    "books",
+    await mongo.readDocuments("database", "books")
+  );
+  await mongo.closeMongo();
 }

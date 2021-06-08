@@ -13,7 +13,7 @@ export class MongoClient {
     return dbList;
   }
 
-  async connectDb(): Promise<void> {
+  async connectMongo(): Promise<void> {
     try {
       await this.client.connect();
     } catch (e) {
@@ -21,7 +21,7 @@ export class MongoClient {
     }
   }
 
-  async closeDb(): Promise<void> {
+  async closeMongo(): Promise<void> {
     try {
       await this.client.close();
     } catch (e) {
@@ -46,6 +46,18 @@ export class MongoClient {
     const db = this.client.db(databaseName);
     const result = await db.collection(collectionName).insertMany(sample_data);
     console.log(result.insertedCount);
+  }
+
+  async readDocuments(
+    databaseName: string,
+    collectionName: string
+  ): Promise<Record<string, unknown>[]> {
+    const db = this.client.db(databaseName);
+    const result: Record<string, unknown>[] = await db
+      .collection(collectionName)
+      .find()
+      .toArray();
+    return result;
   }
 
   constructor(url: string) {

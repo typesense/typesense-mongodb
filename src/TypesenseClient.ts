@@ -23,18 +23,21 @@ export class TypesenseClient {
       name: collectionName,
       fields: [{ name: ".*", type: "auto" }],
     };
-    const result = await this.client.collections().create(autoSchema);
+    const result: schema = await this.client.collections().create(autoSchema);
     console.log(result);
   }
 
   async importDocuments(
     collectionName: string,
-    documents: Record<string, unknown>
+    documents: Record<string, unknown>[]
   ): Promise<void> {
-    const result = await this.client
+    interface success {
+      success: boolean;
+    }
+    const result: success[] = await this.client
       .collections(collectionName)
       .documents()
       .import(documents, { action: "create" });
-    console.log(result);
+    console.log(result.length);
   }
 }
