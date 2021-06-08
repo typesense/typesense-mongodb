@@ -3,6 +3,9 @@ import { databaseList } from "./interfaces/databaseList";
 
 export class MongoClient {
   client: Client;
+  url: string;
+  mongoOptions: { useNewUrlParser: boolean; useUnifiedTopology: boolean };
+
   async listAlldatabases(): Promise<databaseList> {
     const dbList = await this.client.db().admin().listDatabases();
     return dbList;
@@ -24,11 +27,20 @@ export class MongoClient {
     }
   }
 
+  async listCollections(databaseName: string): Promise<void> {
+    const collectionList = await this.client
+      .db(databaseName)
+      .listCollections()
+      .toArray();
+    console.log(collectionList);
+  }
+
   constructor(url: string) {
     const mongoOptions = {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     };
     this.client = new Client(url, mongoOptions);
+    this.url = url;
   }
 }

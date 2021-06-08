@@ -7,5 +7,8 @@ export async function Main(): Promise<void> {
   await mongo.connectDb();
   const dbList = await mongo.listAlldatabases();
   console.log(dbList);
+  // dbList = await mongo.listAlldatabases();
+  // console.log(dbList);
+  await mongo.listCollections("database");
   mongo.closeDb();
 }
