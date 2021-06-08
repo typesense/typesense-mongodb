@@ -1,10 +1,12 @@
 import { MongoClient as Client } from "mongodb";
 import { databaseList } from "./interfaces/databaseList";
-
 export class MongoClient {
-  client: Client;
-  url: string;
-  mongoOptions: { useNewUrlParser: boolean; useUnifiedTopology: boolean };
+  private client: Client;
+  private url: string;
+  private mongoOptions: {
+    useNewUrlParser: boolean;
+    useUnifiedTopology: boolean;
+  };
 
   async listAlldatabases(): Promise<databaseList> {
     const dbList = await this.client.db().admin().listDatabases();
@@ -35,12 +37,23 @@ export class MongoClient {
     console.log(collectionList);
   }
 
+  async insertDocuments(
+    databaseName: string,
+    collectionName: string
+  ): Promise<void> {
+    const books = await require("../data/books.json");
+    const sample_data = books.slice(0, 5000);
+    const db = this.client.db(databaseName);
+    const result = await db.collection(collectionName).insertMany(sample_data);
+    console.log(result.insertedCount);
+  }
+
   constructor(url: string) {
-    const mongoOptions = {
+    this.mongoOptions = {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     };
-    this.client = new Client(url, mongoOptions);
+    this.client = new Client(url, this.mongoOptions);
     this.url = url;
   }
 }

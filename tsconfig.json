@@ -7,7 +7,8 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "./dist",
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "resolveJsonModule": true,
   },
   "lib": ["es2015"]
 }
