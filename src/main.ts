@@ -1,7 +1,7 @@
 import { MongoClient } from "./MongoClient";
 import { TypesenseClient } from "./TypesenseClient";
 
-const mongoUrlLocal = "mongodb://root:example@localhost:27017";
+const mongoUrlLocal = "mongodb://localhost:27017";
 
 export async function Main(): Promise<void> {
   const mongo: MongoClient = new MongoClient(mongoUrlLocal);
@@ -12,7 +12,7 @@ export async function Main(): Promise<void> {
       protocol: "http",
     },
   ]);
-  // await typesense.createCollection("books");
+  await typesense.createCollection("books");
   await mongo.connectMongo();
   // const dbList = await mongo.listAlldatabases();
   // dbList = await mongo.listAlldatabases();
@@ -22,5 +22,7 @@ export async function Main(): Promise<void> {
     "books",
     await mongo.readDocuments("database", "books")
   );
-  await mongo.closeMongo();
+  await mongo.watchForChanges("database", "books", () => {
+    return;
+  });
 }

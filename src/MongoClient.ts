@@ -57,7 +57,24 @@ export class MongoClient {
       .collection(collectionName)
       .find()
       .toArray();
+    result.forEach((document) => {
+      document.id = String(document._id);
+      delete document._id;
+    });
+    console.log(result[0]);
     return result;
+  }
+
+  async watchForChanges(
+    databaseName: string,
+    collectionName: string,
+    changesHandler: () => void
+  ): Promise<void> {
+    const collection = this.client.db(databaseName).collection(collectionName);
+    const changeStream = collection.watch();
+    changeStream.on("change", (next) => {
+      console.log(JSON.stringify(next, null, 2));
+    });
   }
 
   constructor(url: string) {
