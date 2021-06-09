@@ -19,12 +19,4 @@ export async function Main(): Promise<void> {
     "books",
     await mongo.readDocuments("database", "books")
   );
-  await mongo.watchForChanges(
-    "database",
-    "books",
-    async (collectionName: string, next) => {
-      await typesense.indexDocuments(collectionName, next);
-      return;
-    }
-  );
 }

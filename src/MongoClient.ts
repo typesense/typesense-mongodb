@@ -1,4 +1,4 @@
-import { MongoClient as Client } from "mongodb";
+import { ChangeStream, MongoClient as Client } from "mongodb";
 import { databaseList } from "./interfaces/databaseList";
 export class MongoClient {
   private client: Client;
@@ -65,16 +65,13 @@ export class MongoClient {
     return result;
   }
 
-  async watchForChanges(
+  changeStreams(
     databaseName: string,
-    collectionName: string,
-    changesHandler: (collectionName: string, next) => Promise<void>
-  ): Promise<void> {
+    collectionName: string
+  ): ChangeStream<unknown> {
     const collection = this.client.db(databaseName).collection(collectionName);
     const changeStream = collection.watch();
-    changeStream.on("change", (next) => {
-      changesHandler(collectionName, next);
-    });
+    return changeStream;
   }
 
   constructor(url: string) {

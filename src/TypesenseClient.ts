@@ -53,32 +53,10 @@ export class TypesenseClient {
     console.log(result.length);
   }
 
-  async indexDocuments(
+  async insertDocument(
     collectionName: string,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    next: Record<string, any>
+    document: Record<string, unknown>
   ): Promise<void> {
-    if (next.operationType == "delete") {
-      await this.client
-        .collections(collectionName)
-        .documents(next.documentKey._id)
-        .delete();
-      console.log("Delete:" + next.documentKey._id);
-    } else if (next.operationType == "update") {
-      const data = JSON.stringify(next.updateDescription.updatedFields);
-      await this.client
-        .collections(collectionName)
-        .documents(next.documentKey._id)
-        .update(data);
-      console.log("Update: " + next.documentKey._id);
-    } else {
-      next.fullDocument.id = next.fullDocument["_id"];
-      delete next.fullDocument._id;
-      await this.client
-        .collections(collectionName)
-        .documents()
-        .upsert(next.fullDocument);
-      console.log("Insert: " + next.fullDocument.id);
-    }
+    await this.client.collections(collectionName).documents(document);
   }
 }
