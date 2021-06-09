@@ -57,6 +57,17 @@ export class TypesenseClient {
     collectionName: string,
     document: Record<string, unknown>
   ): Promise<void> {
-    await this.client.collections(collectionName).documents(document);
+    await this.client.collections(collectionName).documents().create(document);
+  }
+
+  async updateDocument(
+    collectionName: string,
+    id: string,
+    updatedDocument: Record<string, unknown>
+  ): Promise<void> {
+    await this.client
+      .collections(collectionName)
+      .documents(id)
+      .update(updatedDocument);
   }
 }
