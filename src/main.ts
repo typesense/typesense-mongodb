@@ -14,15 +14,17 @@ export async function Main(): Promise<void> {
   ]);
   await typesense.createCollection("books");
   await mongo.connectMongo();
-  // const dbList = await mongo.listAlldatabases();
-  // dbList = await mongo.listAlldatabases();
-  // await mongo.listCollections("database");
   await mongo.insertDocuments("database", "books");
   await typesense.importDocuments(
     "books",
     await mongo.readDocuments("database", "books")
   );
-  await mongo.watchForChanges("database", "books", () => {
-    return;
-  });
+  await mongo.watchForChanges(
+    "database",
+    "books",
+    async (collectionName: string, next) => {
+      await typesense.indexDocuments(collectionName, next);
+      return;
+    }
+  );
 }

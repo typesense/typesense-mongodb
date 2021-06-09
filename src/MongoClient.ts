@@ -68,12 +68,12 @@ export class MongoClient {
   async watchForChanges(
     databaseName: string,
     collectionName: string,
-    changesHandler: () => void
+    changesHandler: (collectionName: string, next) => Promise<void>
   ): Promise<void> {
     const collection = this.client.db(databaseName).collection(collectionName);
     const changeStream = collection.watch();
     changeStream.on("change", (next) => {
-      console.log(JSON.stringify(next, null, 2));
+      changesHandler(collectionName, next);
     });
   }
 
