@@ -24,7 +24,21 @@ jobs:
             - ./node_modules
       - run:
           name: docker-compose
-          command: docker-compose up
+          command: docker-compose up -d
+      - run:
+          name: install dockerize
+          command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+          environment:
+            DOCKERIZE_VERSION: v0.6.1
+      - run:
+          name: Wait for db
+          command: dockerize -wait http://localhost:8081 -timeout 1m
+      - run:
+          name: Initialize Replica Set mongoDB
+          command: docker exec -it mongo mongo --eval "rs.initiate()"
+      - run:
+          name: Wait for typesense
+          command: dockerize -wait http://localhost:8108/health -timeout 1m && sleep 10s
       - run:
           name: npm test
           command: npm test -- --ci --reporters=default --reporters=jest-junit
@@ -36,6 +50,6 @@ jobs:
           path: reports/junit
 
 workflows:
-  typesense_server_integration_tests:
+  typesense-mongodb:
     jobs:
       - test

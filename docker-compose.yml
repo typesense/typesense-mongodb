@@ -2,6 +2,7 @@ version: '3.8'
 services:
   mongo:
     image: mongo
+    container_name: mongo
     ports:
       - 27017:27017
     volumes:
@@ -10,6 +11,7 @@ services:
 
   mongo-express:
     image: mongo-express
+    container_name: mongo-express
     ports:
       - 8081:8081
     environment: 
@@ -19,6 +21,7 @@ services:
 
   typesense:
     image: typesense/typesense:0.21.0.rc10
+    container_name: typesense
     ports:
       - 8108:8108
     environment:
