@@ -1,4 +1,3 @@
-import { title } from "process";
 import { book } from "./globalSetup";
 
 describe("MongoClient functions", () => {
