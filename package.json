@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --no-cache --max-workers=1",
+    "test": "jest --no-cache --max-workers=1 --verbose --silent",
     "lint": "./node_modules/.bin/eslint -c .eslintrc.js",
     "build": "tsc"
   },

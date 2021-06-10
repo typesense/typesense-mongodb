@@ -65,7 +65,6 @@ export class MongoClient {
       document.id = String(document._id);
       delete document._id;
     });
-    console.log(result[0]);
     return result;
   }
 

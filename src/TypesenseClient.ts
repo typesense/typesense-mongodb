@@ -42,14 +42,10 @@ export class TypesenseClient {
     collectionName: string,
     documents: Record<string, unknown>[]
   ): Promise<void> {
-    interface success {
-      success: boolean;
-    }
-    const result: success[] = await this.client
+    await this.client
       .collections(collectionName)
       .documents()
       .import(documents, { action: "create" });
-    console.log(result.length);
   }
 
   async insertDocument(
