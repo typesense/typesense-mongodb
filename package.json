@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --no-cache",
     "lint": "./node_modules/.bin/eslint -c .eslintrc.js",
     "build": "tsc"
   },
@@ -27,6 +27,7 @@
   "dependencies": {
     "@types/jest": "^26.0.23",
     "@types/mongodb": "^3.6.17",
+    "@types/node": "^15.12.2",
     "arg": "^5.0.0",
     "chalk": "^4.1.1",
     "execa": "^5.1.1",
