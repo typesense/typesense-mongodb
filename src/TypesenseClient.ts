@@ -62,12 +62,11 @@ export class TypesenseClient {
 
   async updateDocument(
     collectionName: string,
-    id: string,
     updatedDocument: Record<string, unknown>
   ): Promise<void> {
     await this.client
       .collections(collectionName)
-      .documents(id)
-      .update(updatedDocument);
+      .documents()
+      .upsert(updatedDocument);
   }
 }
