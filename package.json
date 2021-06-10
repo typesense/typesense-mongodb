@@ -25,6 +25,7 @@
     "access": "public"
   },
   "dependencies": {
+    "@babel/runtime": "^7.14.5",
     "@types/jest": "^26.0.23",
     "@types/mongodb": "^3.6.17",
     "@types/node": "^15.12.2",
