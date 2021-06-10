@@ -1,10 +1,10 @@
-{
+ {
   "name": "typesense-mongodb",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --no-cache",
+    "test": "jest --no-cache --max-workers=1",
     "lint": "./node_modules/.bin/eslint -c .eslintrc.js",
     "build": "tsc"
   },

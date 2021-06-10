@@ -1,5 +1,6 @@
 import { MongoClient } from "mongodb";
 import { MongoClient as TestClient } from "../src/MongoClient";
+import { TypesenseClient } from "../src/TypesenseClient";
 import { Client } from "typesense";
 
 beforeEach(async () => {
@@ -45,7 +46,22 @@ beforeEach(async () => {
     apiKey: "xyz",
   });
   global.typesense = typesense;
-
+  global.autoSchema = {
+    name: "books",
+    fields: [
+      {
+        name: ".*",
+        type: "auto",
+      },
+    ],
+  };
+  global.testTypesense = new TypesenseClient("xyz", [
+    {
+      host: "localhost",
+      port: "8108",
+      protocol: "http",
+    },
+  ]);
   const typesenseCollections = await typesense.collections().retrieve();
   await Promise.all(
     typesenseCollections.map(

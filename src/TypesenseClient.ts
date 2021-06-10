@@ -35,8 +35,7 @@ export class TypesenseClient {
       name: collectionName,
       fields: [{ name: ".*", type: "auto" }],
     };
-    const result: schema = await this.client.collections().create(autoSchema);
-    console.log(result);
+    await this.client.collections().create(autoSchema);
   }
 
   async importDocuments(
