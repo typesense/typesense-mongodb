@@ -1,4 +1,4 @@
-import { ChangeEventCR } from "mongodb";
+import { ChangeEventCR, ChangeEventUpdate } from "mongodb";
 import { MongoClient } from "./MongoClient";
 import { TypesenseClient } from "./TypesenseClient";
 
@@ -35,17 +35,30 @@ export class ChangeStreams {
       this.mongoDatabaseName,
       this.mongoCollectionName
     );
-    changeStream.on("change", (response) => {
+    changeStream.on("change", async (response) => {
       if (response.operationType === Events.insert) {
-        this.insert(response);
+        await this.insert(response);
+      }
+      if (response.operationType === Events.update) {
+        await this.update(response);
       }
     });
   }
 
-  async insert(response: ChangeEventCR<unknown>): Promise<void> {
-    const data = JSON.parse(JSON.stringify(response.fullDocument));
-    data.id = String(data._id);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async insert(response: ChangeEventCR<any>): Promise<void> {
+    const data = response.fullDocument;
+    Object.assign(data, {
+      id: response.documentKey._id,
+    });
     delete data._id;
     await this.typesense.insertDocument(this.typesenseCollectionName, data);
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async update(response: ChangeEventUpdate<any>): Promise<void> {
+    const data = response.fullDocument;
+    delete data._id;
+    await this.typesense.updateDocument(this.typesenseCollectionName, data);
   }
 }
