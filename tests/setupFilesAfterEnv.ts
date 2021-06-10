@@ -18,6 +18,7 @@ beforeEach(async () => {
       }
     },
   });
+  global.books = await require("../data/books.json");
   global.mongoUrl = "mongodb://localhost:27017";
   const mongoOptions = {
     useNewUrlParser: true,
@@ -63,6 +64,22 @@ beforeEach(async () => {
 });
 
 afterEach(async () => {
-  global.mongo.close();
-  global.testMongo.closeMongo();
+  const mongoDatabases = await global.mongo.db().admin().listDatabases();
+  await Promise.all(
+    mongoDatabases.databases.map(async (database) => {
+      if (!["admin", "local", "config"].includes(database.name)) {
+        await global.mongo.db(database.name).dropDatabase();
+      }
+    })
+  );
+
+  const typesenseCollections = await global.typesense.collections().retrieve();
+  await Promise.all(
+    typesenseCollections.map(
+      async (c) => await global.typesense.collections(c.name).delete()
+    )
+  );
+
+  await global.mongo.close();
+  await global.testMongo.closeMongo();
 });

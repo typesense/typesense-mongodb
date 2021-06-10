@@ -7,7 +7,14 @@ import { MongoClient as TestClient } from "../src/MongoClient";
 module.exports = () => {
   return;
 };
-
+export interface book {
+  id: string;
+  title: string;
+  publication_year: number;
+  ratings_count: number;
+  average_rating: number;
+  authors: string[];
+}
 declare global {
   namespace NodeJS {
     interface Global {
@@ -17,6 +24,7 @@ declare global {
       typesense: typeof Client;
       testTypesense: TypesenseClient;
       autoSchema: schema;
+      books: book[];
     }
   }
   namespace jest {

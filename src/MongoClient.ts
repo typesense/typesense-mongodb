@@ -49,8 +49,7 @@ export class MongoClient {
     const books = await require("../data/books.json");
     const sample_data = books.slice(0, 5000);
     const db = this.client.db(databaseName);
-    const result = await db.collection(collectionName).insertMany(sample_data);
-    console.log(result.insertedCount);
+    await db.collection(collectionName).insertMany(sample_data);
   }
 
   async readDocuments(
