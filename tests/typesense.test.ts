@@ -1,5 +1,3 @@
-import { book } from "./globalSetup";
-
 describe("TypesenseClient functions", () => {
   it("createCollection()", async () => {
     const collectionName = "books";
@@ -26,6 +24,23 @@ describe("TypesenseClient functions", () => {
     const sample_document = JSON.parse(JSON.stringify(global.books[0]));
     await global.typesense.collections().create(global.autoSchema);
     await global.testTypesense.insertDocument(collectionName, sample_document);
+    const result = await global.typesense
+      .collections(collectionName)
+      .documents(sample_document.id)
+      .retrieve();
+    expect(result).toEqual(sample_document);
+  });
+
+  it("updateDocument()", async () => {
+    const collectionName = "books";
+    const sample_document = JSON.parse(JSON.stringify(global.books[0]));
+    await global.typesense.collections().create(global.autoSchema);
+    await global.typesense
+      .collections(collectionName)
+      .documents()
+      .create(sample_document);
+    sample_document.title = "test_name";
+    await global.testTypesense.updateDocument(collectionName, sample_document);
     const result = await global.typesense
       .collections(collectionName)
       .documents(sample_document.id)

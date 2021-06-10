@@ -58,6 +58,9 @@ export class ChangeStreams {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async update(response: ChangeEventUpdate<any>): Promise<void> {
     const data = response.fullDocument;
+    Object.assign(data, {
+      id: response.documentKey._id,
+    });
     delete data._id;
     await this.typesense.updateDocument(this.typesenseCollectionName, data);
   }
