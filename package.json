@@ -1,4 +1,4 @@
- {
+{
   "name": "typesense-mongodb",
   "version": "1.0.0",
   "description": "",
@@ -33,6 +33,8 @@
     "execa": "^5.1.1",
     "inquirer": "^8.1.0",
     "jest": "^27.0.4",
+    "jest-cli": "^27.0.4",
+    "jest-junit": "^12.2.0",
     "listr": "^0.14.3",
     "mongodb": "^3.6.9",
     "ncp": "^2.0.0",
