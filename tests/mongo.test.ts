@@ -63,4 +63,26 @@ describe("MongoClient functions", () => {
       expect(recieved).toBeIn(title);
     });
   });
+
+  it("changeStreams()", async () => {
+    const databaseName = "database";
+    const collectionName = "collection";
+    const document = {
+      name: "sample",
+      title: "Hello",
+    };
+    await global.mongo
+      .db(databaseName)
+      .collection(collectionName)
+      .insertOne(document);
+    const changeStream = global.testMongo.changeStreams(
+      databaseName,
+      collectionName
+    );
+    changeStream.on("change", (response) => {
+      expect(response.operationType).toEqual("drop");
+    });
+    await global.mongo.db(databaseName).dropCollection(collectionName);
+    changeStream.close();
+  });
 });
