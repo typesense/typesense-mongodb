@@ -1,5 +1,4 @@
 import { ChangeStream, MongoClient as Client } from "mongodb";
-import { databaseList } from "./interfaces/databaseList";
 export class MongoClient {
   private client: Client;
   private url: string;
@@ -8,8 +7,11 @@ export class MongoClient {
     useUnifiedTopology: boolean;
   };
 
-  async listAlldatabases(): Promise<databaseList> {
-    const dbList = await this.client.db().admin().listDatabases();
+  async listAllDatabases(): Promise<string[]> {
+    let dbList = await this.client.db().admin().listDatabases();
+    dbList = dbList.databases.map((database) => {
+      return database.name;
+    });
     return dbList;
   }
 
@@ -29,12 +31,15 @@ export class MongoClient {
     }
   }
 
-  async listCollections(databaseName: string): Promise<void> {
-    const collectionList = await this.client
+  async listCollections(databaseName: string): Promise<string[]> {
+    let collectionList = await this.client
       .db(databaseName)
       .listCollections()
       .toArray();
-    console.log(collectionList);
+    collectionList = collectionList.map((collection) => {
+      return collection.name;
+    });
+    return collectionList;
   }
 
   async insertDocuments(
