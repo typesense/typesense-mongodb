@@ -47,4 +47,24 @@ describe("TypesenseClient functions", () => {
       .retrieve();
     expect(result).toEqual(sample_document);
   });
+
+  it("deleteDocument()", async () => {
+    const collectionName = "books";
+    const sample_document = JSON.parse(
+      JSON.stringify(global.books.slice(0, 100))
+    );
+    await global.typesense.collections().create(global.autoSchema);
+    await global.typesense
+      .collections(collectionName)
+      .documents()
+      .import(sample_document, { action: "create" });
+    const result = await global.typesense
+      .collections(collectionName)
+      .retrieve();
+    console.log(JSON.stringify(result, null, 2));
+    await global.testTypesense.deleteDocument(collectionName, "10");
+    await expect(
+      global.typesense.collections(collectionName).documents("10").retrieve()
+    ).rejects.toThrow("404");
+  });
 });

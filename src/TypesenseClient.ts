@@ -64,4 +64,8 @@ export class TypesenseClient {
       .documents()
       .upsert(updatedDocument);
   }
+
+  async deleteDocument(collectionName: string, id: string): Promise<void> {
+    await this.client.collections(collectionName).documents(id).delete();
+  }
 }
