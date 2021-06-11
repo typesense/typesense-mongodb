@@ -63,6 +63,12 @@ beforeEach(async () => {
     },
   ]);
   const typesenseCollections = await typesense.collections().retrieve();
+  const typesenseAliases = await typesense.aliases().retrieve();
+  await Promise.all(
+    typesenseAliases.aliases.map(async (c) =>
+      typesense.aliases(c.name).delete()
+    )
+  );
   await Promise.all(
     typesenseCollections.map(
       async (c) => await typesense.collections(c.name).delete()
