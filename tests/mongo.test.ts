@@ -80,9 +80,14 @@ describe("MongoClient functions", () => {
       collectionName
     );
     changeStream.on("change", (response) => {
-      expect(response.operationType).toEqual("drop");
+      expect(response.operationType).toEqual("insert");
     });
-    await global.mongo.db(databaseName).dropCollection(collectionName);
+    await Promise.resolve(new Promise((resolve) => setTimeout(resolve, 1000)));
+    await global.mongo.db(databaseName).collection(collectionName).insertOne({
+      name: "36000",
+      title: "weird",
+    });
+    await Promise.resolve(new Promise((resolve) => setTimeout(resolve, 1000)));
     changeStream.close();
   });
 });

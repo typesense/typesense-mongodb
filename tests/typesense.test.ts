@@ -92,8 +92,6 @@ describe("TypesenseClient functions", () => {
     const collectionName = "books";
     await global.typesense.collections().create(global.autoSchema);
     await global.testTypesense.renameCollection(collectionName, "books_1");
-    const result = await global.typesense.aliases().retrieve();
-    console.log(JSON.stringify(result, null, 2));
     await expect(
       global.typesense.collections("books_1").retrieve()
     ).resolves.toBeDefined();
