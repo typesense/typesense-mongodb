@@ -1,4 +1,4 @@
-import { ChangeEventCR, ChangeEventUpdate } from "mongodb";
+import { ChangeEventCR, ChangeEventUpdate, ChangeStream } from "mongodb";
 import { MongoClient } from "./MongoClient";
 import { TypesenseClient } from "./TypesenseClient";
 
@@ -14,11 +14,12 @@ enum Events {
 }
 
 export class ChangeStreams {
-  mongo: MongoClient;
-  typesense: TypesenseClient;
-  mongoDatabaseName: string;
-  mongoCollectionName: string;
-  typesenseCollectionName: string;
+  private mongo: MongoClient;
+  private typesense: TypesenseClient;
+  private mongoDatabaseName: string;
+  private mongoCollectionName: string;
+  private typesenseCollectionName: string;
+  private changeStream: ChangeStream<unknown>;
 
   constructor(
     mongo: MongoClient,
@@ -31,11 +32,11 @@ export class ChangeStreams {
     this.mongoDatabaseName = databaseName;
     this.mongoCollectionName = collectionName;
     this.typesenseCollectionName = `${databaseName}_${collectionName}`;
-    const changeStream = this.mongo.changeStreams(
+    this.changeStream = this.mongo.changeStreams(
       this.mongoDatabaseName,
       this.mongoCollectionName
     );
-    changeStream.on("change", async (response) => {
+    this.changeStream.on("change", async (response) => {
       if (response.operationType === Events.insert) {
         await this.insert(response);
       }
@@ -46,6 +47,10 @@ export class ChangeStreams {
         await this.replace(response);
       }
     });
+  }
+
+  async closeChangeStream(): Promise<void> {
+    this.changeStream.close();
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
