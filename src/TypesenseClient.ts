@@ -68,4 +68,13 @@ export class TypesenseClient {
   async deleteDocument(collectionName: string, id: string): Promise<void> {
     await this.client.collections(collectionName).documents(id).delete();
   }
+
+  async replaceDocument(
+    collectionName: string,
+    id: string,
+    document: Record<string, unknown>
+  ): Promise<void> {
+    await this.client.collections(collectionName).documents(id).delete();
+    await this.client.collections(collectionName).documents().create(document);
+  }
 }
