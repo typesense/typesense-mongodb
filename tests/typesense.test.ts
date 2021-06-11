@@ -1,5 +1,3 @@
-import { globalAgent } from "http";
-
 describe("TypesenseClient functions", () => {
   it("createCollection()", async () => {
     const collectionName = "books";

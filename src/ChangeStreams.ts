@@ -42,6 +42,9 @@ export class ChangeStreams {
       if (response.operationType === Events.update) {
         await this.update(response);
       }
+      if (response.operationType === Events.replace) {
+        await this.replace(response);
+      }
     });
   }
 
@@ -63,5 +66,20 @@ export class ChangeStreams {
     });
     delete data._id;
     await this.typesense.updateDocument(this.typesenseCollectionName, data);
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async replace(response: ChangeEventCR<any>): Promise<void> {
+    const id = String(response.documentKey._id);
+    const data = response.fullDocument;
+    Object.assign(data, {
+      id: id,
+    });
+    delete data._id;
+    await this.typesense.replaceDocument(
+      this.typesenseCollectionName,
+      id,
+      data
+    );
   }
 }
