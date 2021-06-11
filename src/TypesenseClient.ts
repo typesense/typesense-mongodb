@@ -77,4 +77,18 @@ export class TypesenseClient {
     await this.client.collections(collectionName).documents(id).delete();
     await this.client.collections(collectionName).documents().create(document);
   }
+
+  async dropCollection(collectionName: string): Promise<void> {
+    await this.client.collections(collectionName).delete();
+  }
+
+  async renameCollection(
+    collectionName: string,
+    newCollectionName: string
+  ): Promise<void> {
+    const aliased_collection = {
+      collection_name: collectionName,
+    };
+    await this.client.aliases().upsert(newCollectionName, aliased_collection);
+  }
 }
