@@ -96,4 +96,18 @@ describe("ChangeStreams functions", () => {
     expect(global.books[100].publication_year).toEqual(result.publication_year);
     expect(global.books[0].id).toEqual(result.id);
   });
+
+  it("delete()", async () => {
+    const id = "1";
+    await global.mongo.db(databaseName).collection(collectionName).deleteOne({
+      _id: id,
+    });
+    await Promise.resolve(new Promise((resolve) => setTimeout(resolve, 1000)));
+    await expect(
+      global.typesense
+        .collections(typesenseCollectionName)
+        .documents(id)
+        .retrieve()
+    ).rejects.toThrow("404");
+  });
 });

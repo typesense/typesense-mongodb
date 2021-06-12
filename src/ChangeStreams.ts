@@ -1,4 +1,10 @@
-import { ChangeEventCR, ChangeEventUpdate, ChangeStream } from "mongodb";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import {
+  ChangeEventCR,
+  ChangeEventDelete,
+  ChangeEventUpdate,
+  ChangeStream,
+} from "mongodb";
 import { MongoClient } from "./MongoClient";
 import { TypesenseClient } from "./TypesenseClient";
 
@@ -47,6 +53,9 @@ export class ChangeStreams {
       if (response.operationType === Events.replace) {
         await this.replace(response);
       }
+      if (response.operationType === Events.delete) {
+        await this.delete(response);
+      }
     });
   }
 
@@ -54,7 +63,6 @@ export class ChangeStreams {
     this.changeStream.close();
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async insert(response: ChangeEventCR<any>): Promise<void> {
     const data = response.fullDocument;
     Object.assign(data, {
@@ -64,7 +72,6 @@ export class ChangeStreams {
     await this.typesense.insertDocument(this.typesenseCollectionName, data);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async update(response: ChangeEventUpdate<any>): Promise<void> {
     const data = response.fullDocument;
     Object.assign(data, {
@@ -74,7 +81,6 @@ export class ChangeStreams {
     await this.typesense.updateDocument(this.typesenseCollectionName, data);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async replace(response: ChangeEventCR<any>): Promise<void> {
     const id = String(response.documentKey._id);
     const data = response.fullDocument;
@@ -87,5 +93,10 @@ export class ChangeStreams {
       id,
       data
     );
+  }
+
+  async delete(response: ChangeEventDelete<any>): Promise<void> {
+    const id = String(response.documentKey._id);
+    await this.typesense.deleteDocument(this.typesenseCollectionName, id);
   }
 }
