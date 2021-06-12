@@ -73,7 +73,7 @@ export class MongoClient {
     collectionName: string
   ): ChangeStream<unknown> {
     const collection = this.client.db(databaseName).collection(collectionName);
-    const changeStream = collection.watch();
+    const changeStream = collection.watch([], { fullDocument: "updateLookup" });
     return changeStream;
   }
 
