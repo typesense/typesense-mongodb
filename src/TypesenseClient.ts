@@ -74,7 +74,14 @@ export class TypesenseClient {
     id: string,
     document: Record<string, unknown>
   ): Promise<void> {
-    await this.client.collections(collectionName).documents(id).delete();
+    try {
+      await this.client.collections(collectionName).documents(id).delete();
+    } catch (err) {
+      if (err instanceof Errors.ObjectNotFound) {
+        return;
+      }
+      throw err;
+    }
     await this.client.collections(collectionName).documents().create(document);
   }
 

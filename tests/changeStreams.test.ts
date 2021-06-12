@@ -75,4 +75,25 @@ describe("ChangeStreams functions", () => {
     expect(global.books[0].publication_year).toEqual(result.publication_year);
     expect(global.books[0].id).toEqual(result.id);
   });
+
+  it("replace()", async () => {
+    const data = JSON.parse(JSON.stringify(global.books[100]));
+    const query = {
+      _id: "1",
+    };
+    await global.mongo
+      .db(databaseName)
+      .collection(collectionName)
+      .replaceOne(query, data, {
+        upsert: true,
+      });
+    await Promise.resolve(new Promise((resolve) => setTimeout(resolve, 1000)));
+    const result = await global.typesense
+      .collections(typesenseCollectionName)
+      .documents("1")
+      .retrieve();
+    expect(global.books[100].title).toEqual(result.title);
+    expect(global.books[100].publication_year).toEqual(result.publication_year);
+    expect(global.books[0].id).toEqual(result.id);
+  });
 });
