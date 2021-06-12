@@ -46,7 +46,7 @@ export class ChangeStreams {
     this.eventMapper();
   }
 
-  async eventMapper(): Promise<void> {
+  eventMapper(): void {
     this.changeStream.on("change", async (response) => {
       console.log(response.operationType);
       if (response.operationType === Events.insert) {
