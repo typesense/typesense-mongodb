@@ -110,4 +110,12 @@ describe("ChangeStreams functions", () => {
         .retrieve()
     ).rejects.toThrow("404");
   });
+
+  it("drop()", async () => {
+    await global.mongo.db(databaseName).collection(collectionName).drop();
+    await Promise.resolve(new Promise((resolve) => setTimeout(resolve, 1000)));
+    await expect(
+      global.typesense.collections(typesenseCollectionName).retrieve()
+    ).rejects.toThrow("404");
+  });
 });

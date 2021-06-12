@@ -2,6 +2,7 @@
 import {
   ChangeEventCR,
   ChangeEventDelete,
+  ChangeEventOther,
   ChangeEventUpdate,
   ChangeStream,
 } from "mongodb";
@@ -56,6 +57,9 @@ export class ChangeStreams {
       if (response.operationType === Events.delete) {
         await this.delete(response);
       }
+      if (response.operationType === Events.drop) {
+        await this.drop();
+      }
     });
   }
 
@@ -98,5 +102,10 @@ export class ChangeStreams {
   async delete(response: ChangeEventDelete<any>): Promise<void> {
     const id = String(response.documentKey._id);
     await this.typesense.deleteDocument(this.typesenseCollectionName, id);
+  }
+
+  async drop(): Promise<void> {
+    await this.typesense.dropCollection(this.typesenseCollectionName);
+    await this.closeChangeStream();
   }
 }
