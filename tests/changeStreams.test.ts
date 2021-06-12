@@ -118,4 +118,28 @@ describe("ChangeStreams functions", () => {
       global.typesense.collections(typesenseCollectionName).retrieve()
     ).rejects.toThrow("404");
   });
+
+  it("rename()", async () => {
+    await global.mongo
+      .db(databaseName)
+      .collection(collectionName)
+      .rename("books_1");
+    const newCollectionName = "books_1";
+    await Promise.resolve(new Promise((resolve) => setTimeout(resolve, 1000)));
+    let { num_documents } = await global.typesense
+      .collections(`${databaseName}_books_1`)
+      .retrieve();
+    expect(num_documents).toEqual(40);
+    await global.mongo
+      .db(databaseName)
+      .collection(newCollectionName)
+      .deleteOne({
+        _id: "10",
+      });
+    await Promise.resolve(new Promise((resolve) => setTimeout(resolve, 1000)));
+    ({ num_documents } = await global.typesense
+      .collections(`${databaseName}_books_1`)
+      .retrieve());
+    expect(num_documents).toEqual(39);
+  });
 });

@@ -2,7 +2,7 @@
 import {
   ChangeEventCR,
   ChangeEventDelete,
-  ChangeEventOther,
+  ChangeEventRename,
   ChangeEventUpdate,
   ChangeStream,
 } from "mongodb";
@@ -43,6 +43,10 @@ export class ChangeStreams {
       this.mongoDatabaseName,
       this.mongoCollectionName
     );
+    this.eventMapper();
+  }
+
+  async eventMapper(): Promise<void> {
     this.changeStream.on("change", async (response) => {
       console.log(response.operationType);
       if (response.operationType === Events.insert) {
@@ -59,6 +63,9 @@ export class ChangeStreams {
       }
       if (response.operationType === Events.drop) {
         await this.drop();
+      }
+      if (response.operationType === Events.rename) {
+        await this.rename(response);
       }
     });
   }
@@ -107,5 +114,20 @@ export class ChangeStreams {
   async drop(): Promise<void> {
     await this.typesense.dropCollection(this.typesenseCollectionName);
     await this.closeChangeStream();
+  }
+
+  async rename(response: ChangeEventRename<any>): Promise<void> {
+    await this.typesense.renameCollection(
+      this.typesenseCollectionName,
+      `${this.mongoDatabaseName}_${response.to.coll}`
+    );
+    this.mongoCollectionName = response.to.coll;
+    this.typesenseCollectionName = `${this.mongoDatabaseName}_${response.to.coll}`;
+    this.closeChangeStream();
+    this.changeStream = this.mongo.changeStreams(
+      this.mongoDatabaseName,
+      this.mongoCollectionName
+    );
+    this.eventMapper();
   }
 }
