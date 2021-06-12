@@ -1,4 +1,3 @@
-import { ObjectId } from "mongodb";
 import { ChangeStreams } from "../src/ChangeStreams";
 
 let changeStream: ChangeStreams;
@@ -8,10 +7,14 @@ const typesenseCollectionName = "database_books";
 
 describe("ChangeStreams functions", () => {
   beforeEach(async () => {
+    let data = JSON.parse(JSON.stringify(global.books.slice(0, 40)));
+    data = data.map((obj) => {
+      return { ...obj, _id: obj.id };
+    });
     await global.mongo
       .db(databaseName)
       .collection(collectionName)
-      .insertMany(global.books.slice(0, 40));
+      .insertMany(data);
     await global.typesense
       .collections()
       .create({ ...global.autoSchema, name: typesenseCollectionName });
@@ -32,22 +35,44 @@ describe("ChangeStreams functions", () => {
     changeStream.closeChangeStream();
   });
   it("insert()", async () => {
-    const id = new ObjectId();
     await global.mongo
       .db(databaseName)
       .collection(collectionName)
       .insertOne({
         ...global.books[60],
-        _id: id,
+        _id: "61",
       });
     await Promise.resolve(new Promise((resolve) => setTimeout(resolve, 1000)));
     const result = await global.typesense
       .collections(typesenseCollectionName)
-      .documents(String(id))
+      .documents("61")
       .retrieve();
     expect(global.books[60]).toEqual({
       ...result,
-      id: "61",
     });
+  });
+
+  it("update()", async () => {
+    const query = {
+      _id: "1",
+    };
+    const data = JSON.parse(JSON.stringify(global.books[100]));
+    const update = {
+      title: data.title,
+    };
+    await global.mongo
+      .db(databaseName)
+      .collection(collectionName)
+      .updateOne(query, {
+        $set: update,
+      });
+    await Promise.resolve(new Promise((resolve) => setTimeout(resolve, 1000)));
+    const result = await global.typesense
+      .collections(typesenseCollectionName)
+      .documents("1")
+      .retrieve();
+    expect(global.books[100].title).toEqual(result.title);
+    expect(global.books[0].publication_year).toEqual(result.publication_year);
+    expect(global.books[0].id).toEqual(result.id);
   });
 });

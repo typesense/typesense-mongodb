@@ -37,6 +37,7 @@ export class ChangeStreams {
       this.mongoCollectionName
     );
     this.changeStream.on("change", async (response) => {
+      console.log(response.operationType);
       if (response.operationType === Events.insert) {
         await this.insert(response);
       }
@@ -57,7 +58,7 @@ export class ChangeStreams {
   async insert(response: ChangeEventCR<any>): Promise<void> {
     const data = response.fullDocument;
     Object.assign(data, {
-      id: response.documentKey._id,
+      id: String(response.documentKey._id),
     });
     delete data._id;
     await this.typesense.insertDocument(this.typesenseCollectionName, data);
@@ -67,7 +68,7 @@ export class ChangeStreams {
   async update(response: ChangeEventUpdate<any>): Promise<void> {
     const data = response.fullDocument;
     Object.assign(data, {
-      id: response.documentKey._id,
+      id: String(response.documentKey._id),
     });
     delete data._id;
     await this.typesense.updateDocument(this.typesenseCollectionName, data);
