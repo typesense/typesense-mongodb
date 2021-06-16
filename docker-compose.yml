@@ -27,5 +27,6 @@ services:
     environment:
       TYPESENSE_API_KEY: xyz
       TYPESENSE_DATA_DIR: /data/typesense
+      TYPESENSE_ENABLE_CORS: "true"
     volumes:
       - /home/thirusenthil/typesense-mongodb/typesense-data:/data/typesense
