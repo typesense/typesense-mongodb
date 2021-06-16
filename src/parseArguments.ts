@@ -16,7 +16,6 @@ export function parseArguments(rawArgs: string[]): config {
       argv: rawArgs.slice(2),
     }
   );
-
   return {
     db: args["--db"],
     coll: args["--coll"],
