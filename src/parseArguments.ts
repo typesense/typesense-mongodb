@@ -4,24 +4,23 @@ import { config } from "./interfaces/config";
 export function parseArguments(rawArgs: string[]): config {
   const args = arg(
     {
-      "--db": String,
-      "--coll": String,
-      "--port": Number,
-      "--host": String,
-      "--user": String,
-      "--pass": String,
-      "--apiKey": String,
+      "--mdb": String,
+      "--mcol": String,
+      "--tcol": String,
+      "--murl": String,
+      "--turl": String,
+      "--tkey": String,
     },
     {
       argv: rawArgs.slice(2),
     }
   );
   return {
-    db: args["--db"],
-    coll: args["--coll"],
-    port: args["--port"],
-    user: args["--user"],
-    pass: args["--pass"],
-    apikey: args["--apiKey"],
+    mongodbDatabaseName: args["--mdb"],
+    mongodbCollectionName: args["--mcol"],
+    typesenseCollectionName: args["--tcol"],
+    mongodbURL: args["--murl"],
+    typesenseURL: args["--turl"],
+    typesenseKey: args["--tkey"],
   };
 }

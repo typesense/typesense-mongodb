@@ -1,8 +1,8 @@
 export interface config {
-  db: string;
-  coll: string;
-  port: number;
-  user: string;
-  pass: string;
-  apikey: string;
+  mongodbDatabaseName: string;
+  mongodbCollectionName: string;
+  typesenseCollectionName: string;
+  mongodbURL: string;
+  typesenseURL: string;
+  typesenseKey: string;
 }

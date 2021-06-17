@@ -1,6 +1,7 @@
-import { Main } from "./main";
+import { config } from "./interfaces/config";
+import { parseArguments } from "./parseArguments";
 
 export async function cli(args: string[]): Promise<void> {
-  await Main();
-  console.log(args);
+  const parsed: config = parseArguments(args);
+  console.log(parsed);
 }
