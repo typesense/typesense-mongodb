@@ -5,6 +5,7 @@ import { MongoClient } from "./MongoClient";
 import { TypesenseClient } from "./TypesenseClient";
 import Listr from "listr";
 import chalk from "chalk";
+import { ChangeStreams } from "./ChangeStreams";
 
 let typesense: TypesenseClient;
 let mongo: MongoClient;
@@ -41,10 +42,10 @@ async function intitializeMongoClient(options: config): Promise<MongoClient> {
   } catch (err) {
     console.error(err);
   }
-  // await mongo.insertDocuments(
-  //   options.mongodbDatabaseName,
-  //   options.mongodbCollectionName
-  // );
+  await mongo.insertDocuments(
+    options.mongodbDatabaseName,
+    options.mongodbCollectionName
+  );
   return mongo;
 }
 
@@ -66,6 +67,20 @@ async function indexExistingDocuments(
     options.mongodbCollectionName
   );
   await typesense.importDocuments(options.typesenseCollectionName, document);
+}
+
+function enableChangeStreams(
+  typesense: TypesenseClient,
+  mongo: MongoClient,
+  options: config
+): void {
+  new ChangeStreams(
+    mongo,
+    typesense,
+    options.mongodbDatabaseName,
+    options.mongodbCollectionName,
+    options.typesenseCollectionName
+  );
 }
 
 export async function Main(parsed: config): Promise<void> {
@@ -105,6 +120,10 @@ export async function Main(parsed: config): Promise<void> {
     {
       title: "Index existing documents",
       task: () => indexExistingDocuments(typesense, mongo, options),
+    },
+    {
+      title: "Open Change Stream",
+      task: () => enableChangeStreams(typesense, mongo, options),
     },
   ]);
 
