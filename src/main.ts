@@ -6,6 +6,10 @@ import { TypesenseClient } from "./TypesenseClient";
 import Listr from "listr";
 import chalk from "chalk";
 
+let typesense: TypesenseClient;
+let mongo: MongoClient;
+let need: number;
+
 function typesenseURLParser(url: string): node {
   const splits = url.split(":");
 
@@ -16,27 +20,52 @@ function typesenseURLParser(url: string): node {
   };
 }
 
-function intitializeTypesenseClient(options: config): TypesenseClient {
-  return new TypesenseClient(options.typesenseKey, [
+async function intitializeTypesenseClient(
+  options: config
+): Promise<TypesenseClient> {
+  typesense = new TypesenseClient(options.typesenseKey, [
     typesenseURLParser(options.typesenseURL),
   ]);
-}
-
-async function intitializeMongoClient(options: config): Promise<MongoClient> {
-  const client = new MongoClient(options.mongodbURL);
   try {
-    await client.connectMongo();
+    await typesense.checkServer();
   } catch (err) {
     console.error(err);
   }
-  return client;
+  return typesense;
+}
+
+async function intitializeMongoClient(options: config): Promise<MongoClient> {
+  mongo = new MongoClient(options.mongodbURL);
+  try {
+    await mongo.connectMongo();
+  } catch (err) {
+    console.error(err);
+  }
+  // await mongo.insertDocuments(
+  //   options.mongodbDatabaseName,
+  //   options.mongodbCollectionName
+  // );
+  return mongo;
 }
 
 async function checkForExistingCollection(
   typesense: TypesenseClient,
   options: config
-): Promise<boolean> {
-  return await typesense.checkCollection(options.typesenseCollectionName);
+): Promise<number> {
+  need = await typesense.checkCollection(options.typesenseCollectionName);
+  return need;
+}
+
+async function indexExistingDocuments(
+  typesense: TypesenseClient,
+  mongo: MongoClient,
+  options: config
+): Promise<void> {
+  const document = await mongo.readDocuments(
+    options.mongodbDatabaseName,
+    options.mongodbCollectionName
+  );
+  await typesense.importDocuments(options.typesenseCollectionName, document);
 }
 
 export async function Main(parsed: config): Promise<void> {
@@ -52,36 +81,30 @@ export async function Main(parsed: config): Promise<void> {
     typesenseURL: parsed.typesenseURL || defaults.typesenseURL,
   };
 
-  let typesense: TypesenseClient;
-  let mongo: MongoClient;
-  let need: boolean;
   const tasks = new Listr([
     {
       title: "Initialize Typesense Client",
-      task: () => {
-        typesense = intitializeTypesenseClient(options);
-      },
+      task: () => intitializeTypesenseClient(options),
     },
     {
       title: "Initialize Mongo Client",
-      task: async () => {
-        mongo = await intitializeMongoClient(options);
-      },
+      task: () => intitializeMongoClient(options),
     },
     {
       title: "Check for an existing typesense collection",
-      task: async () => {
-        need = await checkForExistingCollection(typesense, options);
-      },
+      task: () => checkForExistingCollection(typesense, options),
     },
     {
       title: "Create a new Typesense Collection",
-      task: async () =>
-        await typesense.createCollection(options.typesenseCollectionName),
+      task: () => typesense.createCollection(options.typesenseCollectionName),
       skip: () =>
         need
           ? "Found an existing collection skipping create collection"
           : undefined,
+    },
+    {
+      title: "Index existing documents",
+      task: () => indexExistingDocuments(typesense, mongo, options),
     },
   ]);
 

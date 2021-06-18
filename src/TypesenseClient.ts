@@ -98,4 +98,8 @@ export class TypesenseClient {
       throw err;
     }
   }
+
+  async checkServer(): Promise<void> {
+    return await this.client.health.retrieve();
+  }
 }
