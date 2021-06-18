@@ -19,18 +19,6 @@ export class TypesenseClient {
   }
 
   async createCollection(collectionName: string): Promise<void> {
-    try {
-      await this.client.collections(collectionName).retrieve();
-      console.log("Found a collection deleting it !");
-      await this.client.collections(collectionName).delete();
-    } catch (err) {
-      if (err instanceof Errors.ObjectNotFound) {
-        console.log("Creating a new collection !");
-      } else {
-        console.log("Something unexpected Happened !");
-        throw err;
-      }
-    }
     const autoSchema: schema = {
       name: collectionName,
       fields: [{ name: ".*", type: "auto" }],
@@ -97,5 +85,17 @@ export class TypesenseClient {
       collection_name: collectionName,
     };
     await this.client.aliases().upsert(newCollectionName, aliased_collection);
+  }
+
+  async checkCollection(collectionName: string): Promise<boolean> {
+    try {
+      await this.client.collections(collectionName).retrieve();
+      return true;
+    } catch (err) {
+      if (err instanceof Errors.ObjectNotFound) {
+        return false;
+      }
+      throw err;
+    }
   }
 }

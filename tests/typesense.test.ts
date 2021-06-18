@@ -96,4 +96,15 @@ describe("TypesenseClient functions", () => {
       global.typesense.collections("books_1").retrieve()
     ).resolves.toBeDefined();
   });
+
+  it("checkCollection()", async () => {
+    const collectionName = "books";
+    await global.typesense.collections().create(global.autoSchema);
+    let result: boolean = await global.testTypesense.checkCollection(
+      collectionName
+    );
+    expect(result).toBeTruthy();
+    result = await global.testTypesense.checkCollection("books_1");
+    expect(result).toBeFalsy();
+  });
 });
