@@ -26,7 +26,8 @@ describe("ChangeStreams functions", () => {
       global.testMongo,
       global.testTypesense,
       databaseName,
-      collectionName
+      collectionName,
+      typesenseCollectionName
     );
     await Promise.resolve(new Promise((resolve) => setTimeout(resolve, 1000)));
   });

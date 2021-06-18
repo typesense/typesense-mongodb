@@ -32,13 +32,14 @@ export class ChangeStreams {
     mongo: MongoClient,
     typesense: TypesenseClient,
     databaseName: string,
-    collectionName: string
+    collectionName: string,
+    typesenseCollectionName: string
   ) {
     this.mongo = mongo;
     this.typesense = typesense;
     this.mongoDatabaseName = databaseName;
     this.mongoCollectionName = collectionName;
-    this.typesenseCollectionName = `${databaseName}_${collectionName}`;
+    this.typesenseCollectionName = typesenseCollectionName;
     this.changeStream = this.mongo.changeStreams(
       this.mongoDatabaseName,
       this.mongoCollectionName
