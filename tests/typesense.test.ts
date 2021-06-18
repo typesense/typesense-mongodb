@@ -100,11 +100,11 @@ describe("TypesenseClient functions", () => {
   it("checkCollection()", async () => {
     const collectionName = "books";
     await global.typesense.collections().create(global.autoSchema);
-    let result: boolean = await global.testTypesense.checkCollection(
+    let result: number = await global.testTypesense.checkCollection(
       collectionName
     );
-    expect(result).toBeTruthy();
+    expect(result).not.toBeUndefined();
     result = await global.testTypesense.checkCollection("books_1");
-    expect(result).toBeFalsy();
+    expect(result).toBeUndefined();
   });
 });

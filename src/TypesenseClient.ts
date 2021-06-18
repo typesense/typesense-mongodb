@@ -87,13 +87,13 @@ export class TypesenseClient {
     await this.client.aliases().upsert(newCollectionName, aliased_collection);
   }
 
-  async checkCollection(collectionName: string): Promise<boolean> {
+  async checkCollection(collectionName: string): Promise<number> {
     try {
-      await this.client.collections(collectionName).retrieve();
-      return true;
+      const result = await this.client.collections(collectionName).retrieve();
+      return result.num_documents;
     } catch (err) {
       if (err instanceof Errors.ObjectNotFound) {
-        return false;
+        return undefined;
       }
       throw err;
     }
