@@ -11,7 +11,7 @@ services:
 
   mongo-express:
     image: mongo-express
-    container_name: mongo-express
+    container_name: mongo-express:0.54
     ports:
       - 8081:8081
     environment: 
