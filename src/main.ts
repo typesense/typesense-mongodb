@@ -128,5 +128,5 @@ export async function Main(parsed: config): Promise<void> {
   ]);
 
   await tasks.run();
-  console.log("%s Till now successful", chalk.green("DONE"));
+  console.log("%s Watching for changes..", chalk.green("DONE"));
 }
