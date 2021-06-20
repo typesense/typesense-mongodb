@@ -1,4 +1,4 @@
-# Documentation
+# Typesense MongoDB Intergration
 
 A CLI to to sync documents from MongoDB collection to Typesense. 
 
@@ -17,5 +17,33 @@ This will globally creates a symlink so you can use `typesense-mongodb` access t
 ### Prerequisites
 
 - Make sure your running MongoDB instance is a replica set. Or convert your [standalone MongoDB instance to MongoDB replica set](https://docs.mongodb.com/manual/tutorial/convert-standalone-to-replica-set/).
-- We highly recommend you to stop writes to your MongoDB collection until you get *DONE* message from CLI.
-- If you are familiar with Typesense, it has an option mark certain fields as **facets**. If you would like to use this feature make sure to create your own Typesense collection and pass the collection name as an argument.
+- We highly recommend you stop writes to your MongoDB collection until you get a *DONE* message from CLI.
+- If you are familiar with Typesense, it has an option to mark certain fields as **facets**. If you would like to use this feature, create your own Typesense collection and pass the collection name as an argument.
+
+### Example
+
+```bash
+typesense-mongodb \
+    --mcol=collection \
+    --mdb=database \
+    --tcol=collection \
+    --murl=mongodb://localhost:27017 \
+    --turl=http://localhost:8108 \
+    --tkey=xyz
+```
+
+### Arguments
+
+| Parameter | Default | Description |
+| :--- | :--- |:--- |
+| `--mdb` | database | MongoDB database name |
+| `--mcol` | collection | MongoDB collection name |
+| `--murl` | mongodb://localhost:27017 | MongoDB instance URI along with username and passsword |
+| `--tcol` | collection | Typesense collection name |
+| `--turl` | http://localhost:8108 | Typesense endpoint URL |
+| `--tkey` | xyz | Typesense API key |
+
+
+## Support
+
+Please open a Github issue or join our [Slack Community](https://join.slack.com/t/typesense-community/shared_invite/zt-mx4nbsbn-AuOL89O7iBtvkz136egSJg)
