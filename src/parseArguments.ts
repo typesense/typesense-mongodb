@@ -24,3 +24,13 @@ export function parseArguments(rawArgs: string[]): config {
     typesenseKey: args["--tkey"],
   };
 }
+
+/*
+typesense-mongodb \
+    --mcol=books \
+    --mdb=database \
+    --tcol=books \
+    --murl=mongodb://localhost:27017 \
+    --turl=http://localhost:8108 \
+    --tkey=xyz
+*/
