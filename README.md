@@ -1,6 +1,6 @@
 # Typesense MongoDB Intergration
 
-A CLI to to sync documents from a MongoDB collection to Typesense. 
+A CLI to sync documents from a MongoDB collection to Typesense. 
 
 ## Installation
 
