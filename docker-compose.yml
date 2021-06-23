@@ -2,31 +2,31 @@ version: '3.8'
 services:
   mongo:
     image: mongo
+    container_name: mongo
     ports:
       - 27017:27017
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
     volumes:
       - /home/thirusenthil/typesense-mongodb/mongo-data:/data/db
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
 
   mongo-express:
-    image: mongo-express
+    image: mongo-express:0.54
+    container_name: mongo-express
     ports:
       - 8081:8081
-    environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+    environment: 
       ME_CONFIG_MONGODB_SERVER: mongo
     depends_on:
       - mongo
 
   typesense:
     image: typesense/typesense:0.21.0.rc10
+    container_name: typesense
     ports:
       - 8108:8108
     environment:
       TYPESENSE_API_KEY: xyz
       TYPESENSE_DATA_DIR: /data/typesense
+      TYPESENSE_ENABLE_CORS: "true"
     volumes:
       - /home/thirusenthil/typesense-mongodb/typesense-data:/data/typesense

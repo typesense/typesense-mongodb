@@ -4,4 +4,7 @@
   },
   "editor.formatOnSave": false,
   "editor.tabSize": 2,
+  "jestrunner.debugOptions": {
+    "args": ["--no-cache"]
+  }
 }

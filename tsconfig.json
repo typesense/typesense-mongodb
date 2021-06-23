@@ -7,7 +7,13 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "./dist",
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "resolveJsonModule": true,
   },
-  "lib": ["es2015"]
+  "include": [
+    "src/**/*",
+    "./tests/types/globals.d.ts"
+  ],
+  "exclude": ["tests"],
+  "lib": ["es2015"],
 }

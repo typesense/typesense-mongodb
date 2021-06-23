@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --no-cache --max-workers=1 --verbose --silent",
     "lint": "./node_modules/.bin/eslint -c .eslintrc.js",
     "build": "tsc"
   },
@@ -25,18 +25,26 @@
     "access": "public"
   },
   "dependencies": {
+    "@babel/runtime": "^7.14.5",
+    "@types/jest": "^26.0.23",
     "@types/mongodb": "^3.6.17",
+    "@types/node": "^15.12.2",
     "arg": "^5.0.0",
     "chalk": "^4.1.1",
     "execa": "^5.1.1",
     "inquirer": "^8.1.0",
+    "jest": "^27.0.4",
+    "jest-cli": "^27.0.4",
+    "jest-junit": "^12.2.0",
     "listr": "^0.14.3",
     "mongodb": "^3.6.9",
     "ncp": "^2.0.0",
     "pkg-install": "^1.0.0",
+    "ts-jest": "^27.0.3",
     "typesense": "^0.12.1"
   },
   "devDependencies": {
+    "@types/listr": "^0.14.3",
     "@typescript-eslint/eslint-plugin": "^4.26.0",
     "@typescript-eslint/parser": "^4.26.0",
     "eslint": "^7.28.0",

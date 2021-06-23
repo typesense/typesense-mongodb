@@ -1,7 +1,7 @@
 module.exports = {
   parser: "@typescript-eslint/parser",
   parserOptions: {
-    ecmaVersion: 2020,
+    ecmaVersion: 2021,
   },
   extends: [
     "plugin:@typescript-eslint/recommended",
@@ -10,5 +10,6 @@ module.exports = {
   ],
   rules: {
     semi: ["error", "always"],
+    "@typescript-eslint/no-namespace": "off",
   },
 };
