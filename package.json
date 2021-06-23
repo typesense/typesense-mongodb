@@ -1,0 +1,49 @@
+{
+  "name": "typesense-mongodb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "./node_modules/.bin/eslint -c .eslintrc.js",
+    "build": "tsc"
+  },
+  "bin": {
+    "typesense-mongodb": "bin/typesense-mongodb"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/typesense/typesense-mongodb.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/typesense/typesense-mongodb/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@types/mongodb": "^3.6.17",
+    "arg": "^5.0.0",
+    "chalk": "^4.1.1",
+    "execa": "^5.1.1",
+    "inquirer": "^8.1.0",
+    "listr": "^0.14.3",
+    "mongodb": "^3.6.9",
+    "ncp": "^2.0.0",
+    "pkg-install": "^1.0.0",
+    "typesense": "^0.12.1"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.26.0",
+    "@typescript-eslint/parser": "^4.26.0",
+    "eslint": "^7.28.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "prettier": "^2.3.1",
+    "typescript": "^4.3.2"
+  },
+  "homepage": "https://github.com/typesense/typesense-mongodb#readme"
+}
