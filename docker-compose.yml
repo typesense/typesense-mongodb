@@ -10,7 +10,7 @@ services:
     entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
 
   mongo-express:
-    image: mongo-express:0.54.0
+    image: mongo-express:0.54
     container_name: mongo-express
     ports:
       - 8081:8081
