@@ -4,14 +4,9 @@ A CLI to sync documents from a MongoDB collection to Typesense.
 
 ## Installation
 
-Clone this repository and run,
-
 ```bash
-npm install && npm link
+npm install -g typesense-mongodb
 ```
-
-This will globally creates a symlink so you can use `typesense-mongodb` to access the CLI.
-
 ## Usage
 
 ### Prerequisites
@@ -24,24 +19,24 @@ This will globally creates a symlink so you can use `typesense-mongodb` to acces
 
 ```bash
 typesense-mongodb \
-    --mcol=collection \
-    --mdb=database \
-    --tcol=collection \
-    --murl=mongodb://localhost:27017 \
-    --turl=http://localhost:8108 \
-    --tkey=xyz
+    --mongo-collection=collection \
+    --mongo-database=database \
+    --typesense-collection=collection \
+    --mongo-url=mongodb://localhost:27017 \
+    --typesense-url=http://localhost:8108 \
+    --typesense-api-key=xyz
 ```
 
 ### Arguments
 
 | Parameter | Default | Description |
 | :--- | :--- |:--- |
-| `--mdb` | database | MongoDB database name |
-| `--mcol` | collection | MongoDB collection name |
-| `--murl` | mongodb://localhost:27017 | MongoDB instance URI along with username and passsword |
-| `--tcol` | collection | Typesense collection name |
-| `--turl` | http://localhost:8108 | Typesense endpoint URL |
-| `--tkey` | xyz | Typesense API key |
+| `--mongo-database` | database | MongoDB database name |
+| `--mongo-collection` | collection | MongoDB collection name |
+| `--mongo-url` | mongodb://localhost:27017 | MongoDB instance URI along with username and passsword |
+| `--typesense-collection` | collection | Typesense collection name |
+| `--typesense-url` | http://localhost:8108 | Typesense endpoint URL |
+| `--typesense-api-key` | xyz | Typesense API key |
 
 
 ## Support
