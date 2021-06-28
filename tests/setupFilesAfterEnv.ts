@@ -2,11 +2,34 @@ import { MongoClient } from "mongodb";
 import { MongoClient as TestClient } from "../src/MongoClient";
 import { TypesenseClient } from "../src/TypesenseClient";
 import { Client } from "typesense";
+import { schema } from "../src/interfaces/schema";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { book } from "./globalSetup";
 
+declare global {
+  namespace NodeJS {
+    interface Global {
+      mongoUrl: string;
+      mongo: MongoClient;
+      testMongo: TestClient;
+      typesense: typeof Client;
+      testTypesense: TypesenseClient;
+      autoSchema: schema;
+      books: book[];
+    }
+  }
+  namespace jest {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    interface Matchers<R> {
+      toBeIn(expected: string): CustomMatcherResult;
+    }
+  }
+}
 beforeEach(async () => {
   expect.extend({
-    toBeIn(recieved: string[], name: string) {
-      if (recieved.includes(name)) {
+    toBeIn(received: string[], name: string) {
+      if (received.includes(name)) {
         return {
           pass: true,
           message: () => "Success",
@@ -14,7 +37,7 @@ beforeEach(async () => {
       } else {
         return {
           pass: false,
-          message: () => `${name} not in ${recieved}`,
+          message: () => `${name} not in ${received}`,
         };
       }
     },
@@ -26,15 +49,14 @@ beforeEach(async () => {
     useUnifiedTopology: true,
   };
   const mongo = new MongoClient(global.mongoUrl, mongoOptions);
-  const testMongo = new TestClient(global.mongoUrl);
-  global.testMongo = testMongo;
+  global.mongo = mongo;
+  global.testMongo = new TestClient(global.mongoUrl);
   try {
     await mongo.connect();
   } catch (e) {
     console.error(e);
   }
-  global.testMongo.connectMongo();
-  global.mongo = mongo;
+  await global.testMongo.connectMongo();
   const typesense = new Client({
     nodes: [
       {

@@ -6,7 +6,7 @@ services:
     ports:
       - 27017:27017
     volumes:
-      - /home/thirusenthil/typesense-mongodb/mongo-data:/data/db
+      - mongo:/data/db
     entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
 
   mongo-express:
@@ -14,7 +14,7 @@ services:
     container_name: mongo-express
     ports:
       - 8081:8081
-    environment: 
+    environment:
       ME_CONFIG_MONGODB_SERVER: mongo
     depends_on:
       - mongo
@@ -29,4 +29,10 @@ services:
       TYPESENSE_DATA_DIR: /data/typesense
       TYPESENSE_ENABLE_CORS: "true"
     volumes:
-      - /home/thirusenthil/typesense-mongodb/typesense-data:/data/typesense
+      - typesense:/data/typesense
+
+volumes:
+  mongo:
+    driver: local
+  typesense:
+    driver: local

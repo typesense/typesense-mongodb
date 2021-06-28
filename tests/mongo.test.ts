@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import { book } from "./globalSetup";
 
 describe("MongoClient functions", () => {
@@ -6,9 +8,9 @@ describe("MongoClient functions", () => {
       .db()
       .admin()
       .listDatabases();
-    const recieved = await global.testMongo.listAllDatabases();
+    const received = await global.testMongo.listAllDatabases();
     expectedDatabasesList.databases.map((database) => {
-      expect(recieved).toBeIn(database.name);
+      expect(received).toBeIn(database.name);
     });
   });
 

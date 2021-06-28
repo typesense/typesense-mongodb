@@ -1,5 +1,32 @@
 import { ChangeStreams } from "../src/ChangeStreams";
+import { MongoClient } from "mongodb";
+import { Client } from "typesense";
+import { MongoClient as TestClient } from "../src/MongoClient";
+import { TypesenseClient } from "../src/TypesenseClient";
+import { schema } from "../src/interfaces/schema";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { book } from "./globalSetup";
 
+declare global {
+  namespace NodeJS {
+    interface Global {
+      mongoUrl: string;
+      mongo: MongoClient;
+      testMongo: TestClient;
+      typesense: typeof Client;
+      testTypesense: TypesenseClient;
+      autoSchema: schema;
+      books: book[];
+    }
+  }
+  namespace jest {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    interface Matchers<R> {
+      toBeIn(expected: string): CustomMatcherResult;
+    }
+  }
+}
 let changeStream: ChangeStreams;
 const databaseName = "database";
 const collectionName = "books";

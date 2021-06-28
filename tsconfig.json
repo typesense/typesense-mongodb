@@ -12,7 +12,6 @@
   },
   "include": [
     "src/**/*",
-    "./tests/types/globals.d.ts"
   ],
   "exclude": ["tests"],
   "lib": ["es2015"],
