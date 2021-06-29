@@ -15,12 +15,18 @@
     "type": "git",
     "url": "https://github.com/typesense/typesense-mongodb"
   },
-  "keywords": ["mongodb", "typesense"],
+  "keywords": [
+    "mongodb", "typesense"
+  ],
   "author": "Typesense, Inc.",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/typesense/typesense-mongodb/issues"
   },
+  "files": [
+    "src",
+    "lib"
+  ],
   "publishConfig": {
     "access": "public"
   },
