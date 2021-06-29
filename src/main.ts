@@ -42,10 +42,6 @@ async function initializeMongoClient(options: config): Promise<MongoClient> {
   } catch (err) {
     console.error(err);
   }
-  // await mongo.insertDocuments(
-  //   options.mongodbDatabaseName,
-  //   options.mongodbCollectionName
-  // );
   return mongo;
 }
 
