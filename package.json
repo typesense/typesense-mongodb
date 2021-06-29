@@ -1,7 +1,7 @@
 {
   "name": "typesense-mongodb",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.0.1",
+  "description": "A CLI process to sync data from MongoDB to Typesense",
   "main": "index.js",
   "scripts": {
     "test": "jest --no-cache --max-workers=1 --verbose --silent",
@@ -13,10 +13,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/typesense/typesense-mongodb.git"
+    "url": "https://github.com/typesense/typesense-mongodb"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["mongodb", "typesense"],
+  "author": "Typesense, Inc.",
   "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/typesense/typesense-mongodb/issues"
@@ -53,5 +53,5 @@
     "prettier": "^2.3.1",
     "typescript": "^4.3.2"
   },
-  "homepage": "https://github.com/typesense/typesense-mongodb#readme"
+  "homepage": "https://github.com/typesense/typesense-mongodb"
 }
