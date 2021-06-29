@@ -21,7 +21,7 @@ function typesenseURLParser(url: string): node {
   };
 }
 
-async function intitializeTypesenseClient(
+async function initializeTypesenseClient(
   options: config
 ): Promise<TypesenseClient> {
   typesense = new TypesenseClient(options.typesenseKey, [
@@ -35,7 +35,7 @@ async function intitializeTypesenseClient(
   return typesense;
 }
 
-async function intitializeMongoClient(options: config): Promise<MongoClient> {
+async function initializeMongoClient(options: config): Promise<MongoClient> {
   mongo = new MongoClient(options.mongodbURL);
   try {
     await mongo.connectMongo();
@@ -99,11 +99,11 @@ export async function Main(parsed: config): Promise<void> {
   const tasks = new Listr([
     {
       title: "Initialize Typesense Client",
-      task: () => intitializeTypesenseClient(options),
+      task: () => initializeTypesenseClient(options),
     },
     {
       title: "Initialize Mongo Client",
-      task: () => intitializeMongoClient(options),
+      task: () => initializeMongoClient(options),
     },
     {
       title: "Check for an existing typesense collection",
