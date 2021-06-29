@@ -25,7 +25,9 @@
   },
   "files": [
     "src",
-    "lib"
+    "lib",
+    "bin",
+    "config.js"
   ],
   "publishConfig": {
     "access": "public"
