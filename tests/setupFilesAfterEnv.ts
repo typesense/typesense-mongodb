@@ -6,6 +6,7 @@ import { schema } from "../src/interfaces/schema";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { book } from "./globalSetup";
+import { type } from "os";
 
 declare global {
   namespace NodeJS {
@@ -67,7 +68,16 @@ beforeEach(async () => {
     ],
     apiKey: "xyz",
   });
-  global.typesense = typesense;
+  global.typesense = new Client({
+    nodes: [
+      {
+        host: "localhost",
+        port: "8108",
+        protocol: "http",
+      },
+    ],
+    apiKey: "xyz",
+  });
   global.autoSchema = {
     name: "books",
     fields: [
@@ -96,7 +106,6 @@ beforeEach(async () => {
       async (c) => await typesense.collections(c.name).delete()
     )
   );
-
   const mongoDatabases = await global.mongo.db().admin().listDatabases();
   await Promise.all(
     mongoDatabases.databases.map(async (database) => {

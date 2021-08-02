@@ -38,15 +38,14 @@ declare global {
 export default async function globalSetup(): Promise<void> {
   await setupDevServer([
     {
-      command: "docker-compose up -d",
+      command: "docker-compose up",
       port: 27017,
       host: "0.0.0.0",
-      protocol: "tcp",
       usedPortAction: "ignore",
-      launchTimeout: 120000,
+      launchTimeout: 5000,
     },
   ]);
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+  await new Promise((resolve) => setTimeout(resolve, 5000));
   const newExec = util.promisify(exec);
   await newExec('docker exec -i mongo mongo --eval "rs.initiate()"');
 }
