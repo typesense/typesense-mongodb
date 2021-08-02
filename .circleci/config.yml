@@ -34,9 +34,6 @@ jobs:
           name: Wait for db
           command: dockerize -wait http://localhost:8081 -timeout 1m
       - run:
-          name: Initiate Replica Set in mongoDB
-          command: docker exec -it mongo mongo --eval "rs.initiate()"
-      - run:
           name: Wait for typesense
           command: dockerize -wait http://localhost:8108/health -timeout 1m && sleep 10s
       - run:
