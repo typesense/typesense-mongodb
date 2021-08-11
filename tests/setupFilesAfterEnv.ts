@@ -1,12 +1,11 @@
-import { MongoClient } from "mongodb";
-import { MongoClient as TestClient } from "../src/MongoClient";
-import { TypesenseClient } from "../src/TypesenseClient";
-import { Client } from "typesense";
-import { schema } from "../src/interfaces/schema";
+import { MongoClient } from 'mongodb';
+import { MongoClient as TestClient } from '../src/MongoClient';
+import { TypesenseClient } from '../src/TypesenseClient';
+import { Client } from 'typesense';
+import { schema } from '../src/interfaces/schema';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { book } from "./globalSetup";
-import { type } from "os";
+import { book } from './globalSetup';
 
 declare global {
   namespace NodeJS {
@@ -33,7 +32,7 @@ beforeEach(async () => {
       if (received.includes(name)) {
         return {
           pass: true,
-          message: () => "Success",
+          message: () => 'Success',
         };
       } else {
         return {
@@ -43,8 +42,8 @@ beforeEach(async () => {
       }
     },
   });
-  global.books = await require("../data/books.json");
-  global.mongoUrl = "mongodb://localhost:27017";
+  global.books = await require('../data/books.json');
+  global.mongoUrl = 'mongodb://localhost:27017';
   const mongoOptions = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -61,37 +60,37 @@ beforeEach(async () => {
   const typesense = new Client({
     nodes: [
       {
-        host: "localhost",
-        port: "8108",
-        protocol: "http",
+        host: 'localhost',
+        port: '8108',
+        protocol: 'http',
       },
     ],
-    apiKey: "xyz",
+    apiKey: 'xyz',
   });
   global.typesense = new Client({
     nodes: [
       {
-        host: "localhost",
-        port: "8108",
-        protocol: "http",
+        host: 'localhost',
+        port: '8108',
+        protocol: 'http',
       },
     ],
-    apiKey: "xyz",
+    apiKey: 'xyz',
   });
   global.autoSchema = {
-    name: "books",
+    name: 'books',
     fields: [
       {
-        name: ".*",
-        type: "auto",
+        name: '.*',
+        type: 'auto',
       },
     ],
   };
-  global.testTypesense = new TypesenseClient("xyz", [
+  global.testTypesense = new TypesenseClient('xyz', [
     {
-      host: "localhost",
-      port: "8108",
-      protocol: "http",
+      host: 'localhost',
+      port: '8108',
+      protocol: 'http',
     },
   ]);
   const typesenseCollections = await typesense.collections().retrieve();
@@ -109,7 +108,7 @@ beforeEach(async () => {
   const mongoDatabases = await global.mongo.db().admin().listDatabases();
   await Promise.all(
     mongoDatabases.databases.map(async (database) => {
-      if (!["admin", "local", "config"].includes(database.name)) {
+      if (!['admin', 'local', 'config'].includes(database.name)) {
         await global.mongo.db(database.name).dropDatabase();
       }
     })
@@ -120,7 +119,7 @@ afterEach(async () => {
   const mongoDatabases = await global.mongo.db().admin().listDatabases();
   await Promise.all(
     mongoDatabases.databases.map(async (database) => {
-      if (!["admin", "local", "config"].includes(database.name)) {
+      if (!['admin', 'local', 'config'].includes(database.name)) {
         await global.mongo.db(database.name).dropDatabase();
       }
     })

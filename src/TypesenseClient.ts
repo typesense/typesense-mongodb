@@ -1,6 +1,6 @@
-import { Client, Errors } from "typesense";
-import { node } from "./interfaces/node";
-import { schema } from "./interfaces/schema";
+import { Client, Errors } from 'typesense';
+import { node } from './interfaces/node';
+import { schema } from './interfaces/schema';
 
 export class TypesenseClient {
   private client: Client;
@@ -21,7 +21,7 @@ export class TypesenseClient {
   async createCollection(collectionName: string): Promise<void> {
     const autoSchema: schema = {
       name: collectionName,
-      fields: [{ name: ".*", type: "auto" }],
+      fields: [{ name: '.*', type: 'auto' }],
     };
     await this.client.collections().create(autoSchema);
   }
@@ -33,7 +33,7 @@ export class TypesenseClient {
     await this.client
       .collections(collectionName)
       .documents()
-      .import(documents, { action: "create" });
+      .import(documents, { action: 'create' });
   }
 
   async insertDocument(

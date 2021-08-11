@@ -1,18 +1,18 @@
-import defaults from "./defaults";
-import { config } from "./interfaces/config";
-import { node } from "./interfaces/node";
-import { MongoClient } from "./MongoClient";
-import { TypesenseClient } from "./TypesenseClient";
-import Listr from "listr";
-import chalk from "chalk";
-import { ChangeStreams } from "./ChangeStreams";
+import defaults from './defaults';
+import { config } from './interfaces/config';
+import { node } from './interfaces/node';
+import { MongoClient } from './MongoClient';
+import { TypesenseClient } from './TypesenseClient';
+import Listr from 'listr';
+import chalk from 'chalk';
+import { ChangeStreams } from './ChangeStreams';
 
 let typesense: TypesenseClient;
 let mongo: MongoClient;
 let need: number;
 
 function typesenseURLParser(url: string): node {
-  const splits = url.split(":");
+  const splits = url.split(':');
 
   return {
     host: splits[1].slice(2, splits[1].length),
@@ -94,35 +94,35 @@ export async function Main(parsed: config): Promise<void> {
 
   const tasks = new Listr([
     {
-      title: "Initialize Typesense Client",
+      title: 'Initialize Typesense Client',
       task: () => initializeTypesenseClient(options),
     },
     {
-      title: "Initialize Mongo Client",
+      title: 'Initialize Mongo Client',
       task: () => initializeMongoClient(options),
     },
     {
-      title: "Check for an existing typesense collection",
+      title: 'Check for an existing typesense collection',
       task: () => checkForExistingCollection(typesense, options),
     },
     {
-      title: "Create a new Typesense Collection",
+      title: 'Create a new Typesense Collection',
       task: () => typesense.createCollection(options.typesenseCollectionName),
       skip: () =>
         need
-          ? "Found an existing collection skipping create collection"
+          ? 'Found an existing collection skipping create collection'
           : undefined,
     },
     {
-      title: "Index existing documents",
+      title: 'Index existing documents',
       task: () => indexExistingDocuments(typesense, mongo, options),
     },
     {
-      title: "Open Change Stream",
+      title: 'Open Change Stream',
       task: () => enableChangeStreams(typesense, mongo, options),
     },
   ]);
 
   await tasks.run();
-  console.log("%s Watching for changes..", chalk.green("DONE"));
+  console.log('%s Watching for changes..', chalk.green('DONE'));
 }

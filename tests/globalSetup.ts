@@ -1,11 +1,11 @@
-import { MongoClient } from "mongodb";
-import { Client } from "typesense";
-import { schema } from "../src/interfaces/schema";
-import { TypesenseClient } from "../src/TypesenseClient";
-import { MongoClient as TestClient } from "../src/MongoClient";
-import { setup as setupDevServer } from "jest-dev-server";
-import { exec } from "child_process";
-import * as util from "util";
+import { MongoClient } from 'mongodb';
+import { Client } from 'typesense';
+import { schema } from '../src/interfaces/schema';
+import { TypesenseClient } from '../src/TypesenseClient';
+import { MongoClient as TestClient } from '../src/MongoClient';
+import { setup as setupDevServer } from 'jest-dev-server';
+import { exec } from 'child_process';
+import * as util from 'util';
 
 export interface book {
   id: string;
@@ -38,10 +38,10 @@ declare global {
 export default async function globalSetup(): Promise<void> {
   await setupDevServer([
     {
-      command: "docker-compose up",
+      command: 'docker-compose up',
       port: 27017,
-      host: "0.0.0.0",
-      usedPortAction: "ignore",
+      host: '0.0.0.0',
+      usedPortAction: 'ignore',
       launchTimeout: 5000,
     },
   ]);

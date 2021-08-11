@@ -1,13 +1,15 @@
 # Typesense MongoDB Intergration
+
 ![CircleCI](https://img.shields.io/circleci/build/github/typesense/typesense-mongodb/master)
 
-A CLI to sync documents from a MongoDB collection to Typesense. 
+A CLI to sync documents from a MongoDB collection to Typesense.
 
 ## Installation
 
 ```bash
 npm install -g typesense-mongodb
 ```
+
 ## Usage
 
 ### Prerequisites
@@ -30,15 +32,14 @@ typesense-mongodb \
 
 ### Arguments
 
-| Parameter | Default | Description |
-| :--- | :--- |:--- |
-| `--mongo-database` | database | MongoDB database name |
-| `--mongo-collection` | collection | MongoDB collection name |
-| `--mongo-url` | mongodb://localhost:27017 | MongoDB instance URI along with username and passsword |
-| `--typesense-collection` | collection | Typesense collection name |
-| `--typesense-url` | http://localhost:8108 | Typesense endpoint URL |
-| `--typesense-api-key` | xyz | Typesense API key |
-
+| Parameter                | Default                   | Description                                            |
+| :----------------------- | :------------------------ | :----------------------------------------------------- |
+| `--mongo-database`       | database                  | MongoDB database name                                  |
+| `--mongo-collection`     | collection                | MongoDB collection name                                |
+| `--mongo-url`            | mongodb://localhost:27017 | MongoDB instance URI along with username and passsword |
+| `--typesense-collection` | collection                | Typesense collection name                              |
+| `--typesense-url`        | http://localhost:8108     | Typesense endpoint URL                                 |
+| `--typesense-api-key`    | xyz                       | Typesense API key                                      |
 
 ## Support
 

@@ -5,19 +5,19 @@ import {
   ChangeEventRename,
   ChangeEventUpdate,
   ChangeStream,
-} from "mongodb";
-import { MongoClient } from "./MongoClient";
-import { TypesenseClient } from "./TypesenseClient";
+} from 'mongodb';
+import { MongoClient } from './MongoClient';
+import { TypesenseClient } from './TypesenseClient';
 
 enum Events {
-  insert = "insert",
-  update = "update",
-  replace = "replace",
-  delete = "delete",
-  drop = "drop",
-  rename = "rename",
-  dropDatabase = "dropDatabase",
-  invalidate = "invalidate",
+  insert = 'insert',
+  update = 'update',
+  replace = 'replace',
+  delete = 'delete',
+  drop = 'drop',
+  rename = 'rename',
+  dropDatabase = 'dropDatabase',
+  invalidate = 'invalidate',
 }
 
 export class ChangeStreams {
@@ -48,7 +48,7 @@ export class ChangeStreams {
   }
 
   eventMapper(): void {
-    this.changeStream.on("change", async (response) => {
+    this.changeStream.on('change', async (response) => {
       console.log(response.operationType);
       if (response.operationType === Events.insert) {
         await this.insert(response);

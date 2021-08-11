@@ -1,9 +1,9 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { book } from "./globalSetup";
+import { book } from './globalSetup';
 
-describe("MongoClient functions", () => {
-  it("listAllDatabases()", async () => {
+describe('MongoClient functions', () => {
+  it('listAllDatabases()', async () => {
     const expectedDatabasesList = await global.mongo
       .db()
       .admin()
@@ -14,12 +14,12 @@ describe("MongoClient functions", () => {
     });
   });
 
-  it("listCollections()", async () => {
-    const databaseName = "database";
-    const collectionName = "books";
+  it('listCollections()', async () => {
+    const databaseName = 'database';
+    const collectionName = 'books';
     const document = {
-      name: "sample",
-      title: "Hello",
+      name: 'sample',
+      title: 'Hello',
     };
     await global.mongo
       .db(databaseName)
@@ -29,10 +29,10 @@ describe("MongoClient functions", () => {
     expect(recieved).toBeIn(collectionName);
   });
 
-  it("insertDocuments()", async () => {
-    const databaseName = "database";
-    const collectionName = "collection";
-    await global.testMongo.insertDocuments("database", "collection");
+  it('insertDocuments()', async () => {
+    const databaseName = 'database';
+    const collectionName = 'collection';
+    await global.testMongo.insertDocuments('database', 'collection');
     const result = await global.mongo
       .db(databaseName)
       .collection(collectionName)
@@ -40,9 +40,9 @@ describe("MongoClient functions", () => {
     expect(result).toEqual(5000);
   });
 
-  it("readDocuments()", async () => {
-    const databaseName = "database";
-    const collectionName = "collection";
+  it('readDocuments()', async () => {
+    const databaseName = 'database';
+    const collectionName = 'collection';
     await global.mongo
       .db(databaseName)
       .collection(collectionName)
@@ -66,12 +66,12 @@ describe("MongoClient functions", () => {
     });
   });
 
-  it("changeStreams()", async () => {
-    const databaseName = "database";
-    const collectionName = "collection";
+  it('changeStreams()', async () => {
+    const databaseName = 'database';
+    const collectionName = 'collection';
     const document = {
-      name: "sample",
-      title: "Hello",
+      name: 'sample',
+      title: 'Hello',
     };
     await global.mongo
       .db(databaseName)
@@ -81,13 +81,13 @@ describe("MongoClient functions", () => {
       databaseName,
       collectionName
     );
-    changeStream.on("change", (response) => {
-      expect(response.operationType).toEqual("insert");
+    changeStream.on('change', (response) => {
+      expect(response.operationType).toEqual('insert');
     });
     await Promise.resolve(new Promise((resolve) => setTimeout(resolve, 1000)));
     await global.mongo.db(databaseName).collection(collectionName).insertOne({
-      name: "36000",
-      title: "weird",
+      name: '36000',
+      title: 'weird',
     });
     await Promise.resolve(new Promise((resolve) => setTimeout(resolve, 1000)));
     changeStream.close();

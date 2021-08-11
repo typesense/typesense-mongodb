@@ -1,4 +1,4 @@
-import { ChangeStream, MongoClient as Client } from "mongodb";
+import { ChangeStream, MongoClient as Client } from 'mongodb';
 export class MongoClient {
   private client: Client;
   private url: string;
@@ -46,7 +46,7 @@ export class MongoClient {
     databaseName: string,
     collectionName: string
   ): Promise<void> {
-    const books = await require("../data/books.json");
+    const books = await require('../data/books.json');
     const sample_data = books.slice(0, 5000);
     const db = this.client.db(databaseName);
     await db.collection(collectionName).insertMany(sample_data);
@@ -73,7 +73,7 @@ export class MongoClient {
     collectionName: string
   ): ChangeStream<unknown> {
     const collection = this.client.db(databaseName).collection(collectionName);
-    const changeStream = collection.watch([], { fullDocument: "updateLookup" });
+    const changeStream = collection.watch([], { fullDocument: 'updateLookup' });
     return changeStream;
   }
 
