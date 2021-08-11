@@ -1,4 +1,4 @@
-# Typesense MongoDB Intergration
+# Typesense MongoDB Integration
 ![CircleCI](https://img.shields.io/circleci/build/github/typesense/typesense-mongodb/master)
 
 A CLI to sync documents from a MongoDB collection to Typesense. 
