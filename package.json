@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --no-cache --max-workers=1 --verbose --silent",
-    "lint": "./node_modules/.bin/eslint -c .eslintrc.js",
+    "lint": "./node_modules/.bin/eslint -c .eslintrc.js . --fix",
     "build": "tsc"
   },
   "bin": {
