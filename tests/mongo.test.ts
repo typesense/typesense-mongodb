@@ -25,8 +25,8 @@ describe('MongoClient functions', () => {
       .db(databaseName)
       .collection(collectionName)
       .insertOne(document);
-    const recieved = await global.testMongo.listCollections(databaseName);
-    expect(recieved).toBeIn(collectionName);
+    const received = await global.testMongo.listCollections(databaseName);
+    expect(received).toBeIn(collectionName);
   });
 
   it('insertDocuments()', async () => {
@@ -58,11 +58,11 @@ describe('MongoClient functions', () => {
       databaseName,
       collectionName
     );
-    const recieved = result.map((book) => {
+    const received = result.map((book) => {
       return book.title;
     });
     titles.forEach((title) => {
-      expect(recieved).toBeIn(title);
+      expect(received).toBeIn(title);
     });
   });
 

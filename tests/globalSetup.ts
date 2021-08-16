@@ -45,7 +45,9 @@ export default async function globalSetup(): Promise<void> {
       launchTimeout: 5000,
     },
   ]);
-  await new Promise((resolve) => setTimeout(resolve, 15000));
+  if (process.env.CI === 'true') {
+    await new Promise((resolve) => setTimeout(resolve, 15000));
+  }
   const newExec = util.promisify(exec);
   await newExec('docker exec -i mongo mongo --eval "rs.initiate()"');
 }
